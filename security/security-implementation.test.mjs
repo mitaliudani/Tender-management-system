@@ -39,7 +39,7 @@ test('HTML output encoder compiles and passes Java 8-compatible edge cases', () 
   const directory = mkdtempSync(join(tmpdir(), 'tender-html-'));
   try {
     const compile = spawnSync('java', [
-      'com.sun.tools.javac.Main', '-source', '8', '-target', '8', '-d', directory,
+      'com.sun.tools.javac.Main', '-encoding', 'UTF-8', '-source', '8', '-target', '8', '-d', directory,
       resolve(root, 'src/com/hit/security/HtmlEscaper.java'),
       resolve(root, 'security/java-tests/HtmlEscaperTest.java'),
     ], {encoding: 'utf8'});

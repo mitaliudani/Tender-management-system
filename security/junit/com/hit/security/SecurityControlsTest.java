@@ -79,6 +79,15 @@ public class SecurityControlsTest {
     }
 
     @Test
+    public void htmlEscaperHandlesNullMarkupQuotedAttributesAndUnicode() {
+        assertEquals("", HtmlEscaper.escape(null));
+        assertEquals("", HtmlEscaper.escape(""));
+        assertEquals("Text &amp; &lt;tag&gt; &quot;quoted&quot; &#39;single&#39;",
+                HtmlEscaper.escape("Text & <tag> \"quoted\" 'single'"));
+        assertEquals("नमस्ते", HtmlEscaper.escape("नमस्ते"));
+    }
+
+    @Test
     public void filterRejectsGetMissingTokenAndVendorRole() throws Exception {
         Map<String, Object> attributes = new HashMap<>();
         attributes.put("user", "admin");

@@ -1,7 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {readFileSync} from 'node:fs';
-import {resolve} from 'node:path';
+import {readFileSync, mkdtempSync, mkdirSync, rmSync, writeFileSync} from 'node:fs';
+import {tmpdir} from 'node:os';
+import {resolve, join} from 'node:path';
 import {scanJsp, scanRepository, findingKey, compareBaseline} from './scan.mjs';
 
 const repo = resolve(import.meta.dirname, '..');
@@ -21,6 +22,31 @@ test('does not flag the corrected role guard or ordinary public links', () => {
   assert.equal(scanJsp(safe, 'example.jsp').length, 0);
 });
 
+test('detects role comparison variants and prefixed or scripted GET actions', () => {
+  const source = `if (role.equals("admin")) { }\n` +
+    `<a href="./RemoveNoticeSrv?noticeid=3">Delete</a>\n` +
+    `window.location = '/app/AcceptBidSrv?bid=8';\n` +
+    `<form action="../RejectBidSrv?bid=2" method="get"></form>`;
+  const findings = scanJsp(source, 'test.jsp');
+  assert.equal(findings.filter(f => f.id === 'AUTH-001').length, 1);
+  assert.equal(findings.filter(f => f.id === 'CSRF-001').length, 3);
+});
+
+test('recursively scans nested JSP files and ignores build/vendor directories', () => {
+  const root = mkdtempSync(join(tmpdir(), 'tender-scan-'));
+  try {
+    mkdirSync(resolve(root, 'admin'));
+    mkdirSync(resolve(root, 'node_modules'));
+    writeFileSync(resolve(root, 'admin', 'unsafe.jsp'), `role.equals("admin")`);
+    writeFileSync(resolve(root, 'node_modules', 'ignored.jsp'), `role.equals("admin")`);
+    const findings = scanRepository(root);
+    assert.equal(findings.length, 1);
+    assert.equal(findings[0].path, 'admin/unsafe.jsp');
+  } finally {
+    rmSync(root, {recursive: true, force: true});
+  }
+});
+
 test('every access-controlled JSP rejects missing sessions and stops rendering', () => {
   const admin = ['addNotice', 'adminHome', 'adminViewVendor', 'adminViewVendorDetail',
     'createTender', 'removeNotice', 'searchTender', 'updateNotice', 'updateNoticeForm',
@@ -30,10 +56,15 @@ test('every access-controlled JSP rejects missing sessions and stops rendering',
   for (const [role, pages] of [['admin', admin], ['user', vendor]]) {
     for (const page of pages) {
       const source = readFileSync(resolve(repo, `${page}.jsp`), 'utf8');
-      assert.match(source, new RegExp(`!"${role}"\\.equalsIgnoreCase\\(user\\)`), page);
-      assert.match(source, /uname\s*==\s*null/, page);
+      const scriptlets = [...source.matchAll(/<%(?!@)([\s\S]*?)%>/g)]
+        .map(match => match[1].replace(/\/\*[\s\S]*?\*\/|\/\/[^\n]*/g, ''));
+      const guardPattern = new RegExp(
+        `if\\s*\\(\\s*!"${role}"\\.equalsIgnoreCase\\(user\\)\\s*\\|\\|\\s*` +
+        `uname\\s*==\\s*null\\s*\\|\\|\\s*uname\\.trim\\(\\)\\.isEmpty\\(\\)\\s*\\)` +
+        `\\s*\\{\\s*response\\.sendRedirect\\("loginFailed\\.jsp"\\);\\s*return;`);
+      assert.ok(scriptlets.some(scriptlet => guardPattern.test(scriptlet)),
+        `${page} must have an active ordered guard, redirect and early return`);
       assert.doesNotMatch(source, /session\.getAttribute\("password"\)|\bpword\b/, page);
-      assert.match(source, /response\.sendRedirect\("loginFailed\.jsp"\);\s*return;/, page);
     }
   }
 });

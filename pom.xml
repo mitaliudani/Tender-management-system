@@ -6,6 +6,9 @@
   <packaging>war</packaging>
   <name>Tender Management System</name>
   <description>Web Application for Online Tender Management</description>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
   <build>
     <sourceDirectory>src</sourceDirectory>
     <testSourceDirectory>security/junit</testSourceDirectory>

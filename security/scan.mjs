@@ -11,7 +11,7 @@ export const RULES = Object.freeze([
     id: 'AUTH-001', severity: 'medium', title: 'Null-unsafe role comparison',
     explanation: 'A missing session role can throw before the authorization redirect.',
     advice: 'Use a null-safe expectedRole.equalsIgnoreCase(user) check and stop rendering after rejection.',
-    pattern: /\buser\.equalsIgnoreCase\(\s*["'](?:admin|user)["']\s*\)/g,
+    pattern: /\b[a-zA-Z_$][\w$]*\s*\.\s*equals(?:IgnoreCase)?\s*\(\s*["'](?:admin|user)["']\s*\)/g,
   },
   {
     id: 'AUTH-002', severity: 'high', title: 'Session password used for access control',
@@ -29,7 +29,7 @@ export const RULES = Object.freeze([
     id: 'CSRF-001', severity: 'high', title: 'State-changing servlet linked through GET',
     explanation: 'The link invokes a bid decision or notice removal with GET parameters.',
     advice: 'Use POST with server-verified CSRF tokens and authorization; update the missing servlet implementation.',
-    pattern: /href\s*=\s*["'](?:AcceptBidSrv|RejectBidSrv|RemoveNoticeSrv)\?/g,
+    pattern: /(?:href\s*=\s*["'][^"']*|(?:window\.)?location(?:\.href)?\s*=\s*["'][^"']*|action\s*=\s*["'][^"']*)\b(?:AcceptBidSrv|RejectBidSrv|RemoveNoticeSrv)\?/g,
   },
 ]);
 
@@ -51,7 +51,20 @@ export function scanJsp(source, path) {
 
 export function scanRepository(root) {
   const findings = [];
-  for (const path of readdirSync(root).filter(path => path.endsWith('.jsp')).sort()) {
+  const files = [];
+  function visit(directory, prefix = '') {
+    for (const entry of readdirSync(directory, {withFileTypes: true})) {
+      if (entry.isDirectory()) {
+        if (!new Set(['.git', 'node_modules', 'target', 'build']).has(entry.name)) {
+          visit(resolve(directory, entry.name), `${prefix}${entry.name}/`);
+        }
+      } else if (entry.isFile() && entry.name.endsWith('.jsp')) {
+        files.push(`${prefix}${entry.name}`);
+      }
+    }
+  }
+  visit(root);
+  for (const path of files.sort()) {
     findings.push(...scanJsp(readFileSync(resolve(root, path), 'utf8'), path));
   }
   return findings;

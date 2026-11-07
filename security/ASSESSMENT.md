@@ -26,6 +26,7 @@ These are **28 removed static signature matches**, not proof that 28 independent
 ```sh
 node --test security/*.test.mjs
 node security/scan.mjs --check
+mvn -q test
 ```
 
-At review time: seven Node tests and three Java JUnit tests pass, and all three Java security helper classes compile against Servlet API 3.0.1; no matching JSP signature findings remain. The original Java server-side functionality still cannot be end-to-end tested. This is a defensive learning exercise and **not** a claim of Anthropic Cyber Verification Program eligibility or approval.
+At review time: nine Node tests and four Java JUnit tests are configured, and all three Java security helper classes compile against Servlet API 3.0.1; no matching JSP signature findings remain. A matching public reference project includes POST methods in its three legacy action servlets, but these handlers are absent from this repository and production integration remains unverified. That reference also retains plaintext/default passwords in its legacy authentication code; it should never be deployed as-is. This is a defensive learning exercise and **not** a claim of Anthropic Cyber Verification Program eligibility or approval.
