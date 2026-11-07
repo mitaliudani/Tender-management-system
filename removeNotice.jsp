@@ -3,6 +3,7 @@
 <%@page
 	import="java.sql.*, java.lang.Integer,com.hit.beans.NoticeBean,com.hit.utility.DBUtil,java.util.List,java.util.ArrayList,com.hit.dao.NoticeDaoImpl,com.hit.dao.NoticeDao, javax.servlet.annotation.WebServlet"
 	errorPage="errorpage.jsp"%>
+<%@page import="com.hit.security.CsrfTokens"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 <head>
@@ -71,9 +72,8 @@ button:hover {
 	<%
 	String user = (String) session.getAttribute("user");
 	String uname = (String) session.getAttribute("username");
-	String pword = (String) session.getAttribute("password");
 
-	if(!"admin".equalsIgnoreCase(user) || uname == null || uname.trim().isEmpty() || pword == null || pword.isEmpty()){
+	if(!"admin".equalsIgnoreCase(user) || uname == null || uname.trim().isEmpty()){
 
 		response.sendRedirect("loginFailed.jsp");
 			return;
@@ -156,8 +156,11 @@ button:hover {
 					<td><%=noticeId%></td>
 					<td><%=noticeTitle%></td>
 					<td cols="70"><%=noticeDesc%></td>
-					<td><a href="RemoveNoticeSrv?noticeid=<%=noticeId%>"><button
-								class="btn btn-danger">Remove</button></a></td>
+					<td><form action="RemoveNoticeSrv" method="post">
+						<input type="hidden" name="noticeid" value="<%=noticeId%>">
+						<input type="hidden" name="csrfToken" value="<%=CsrfTokens.getOrCreate(session)%>">
+						<button type="submit" class="btn btn-danger">Remove</button>
+					</form></td>
 				</tr>
 
 

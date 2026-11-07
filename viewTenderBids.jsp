@@ -65,9 +65,8 @@ button:hover {
 	<%
 	String user = (String) session.getAttribute("user");
 	String uname = (String) session.getAttribute("username");
-	String pword = (String) session.getAttribute("password");
 
-	if(!"admin".equalsIgnoreCase(user) || uname == null || uname.trim().isEmpty() || pword == null || pword.isEmpty()){
+	if(!"admin".equalsIgnoreCase(user) || uname == null || uname.trim().isEmpty()){
 
 		response.sendRedirect("loginFailed.jsp");
 			return;

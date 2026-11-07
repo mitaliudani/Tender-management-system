@@ -1,33 +1,4 @@
 {
   "schemaVersion": 1,
-  "findings": [
-    "AUTH-002:addNotice.jsp:session.getAttribute(\"password\")",
-    "AUTH-002:adminHome.jsp:session.getAttribute(\"password\")",
-    "AUTH-002:adminViewVendor.jsp:session.getAttribute(\"password\")",
-    "AUTH-002:adminViewVendorDetail.jsp:session.getAttribute(\"password\")",
-    "XSS-001:adminViewVendorDetail.jsp:<%= request.getParameter(\"vid\") %>",
-    "AUTH-002:bidHistory.jsp:session.getAttribute(\"password\")",
-    "AUTH-002:bidTender.jsp:session.getAttribute(\"password\")",
-    "AUTH-002:bidTenderForm.jsp:session.getAttribute(\"password\")",
-    "AUTH-002:createTender.jsp:session.getAttribute(\"password\")",
-    "AUTH-002:removeNotice.jsp:session.getAttribute(\"password\")",
-    "CSRF-001:removeNotice.jsp:href=\"RemoveNoticeSrv?",
-    "AUTH-002:searchTender.jsp:session.getAttribute(\"password\")",
-    "AUTH-002:updateNotice.jsp:session.getAttribute(\"password\")",
-    "AUTH-002:updateNoticeForm.jsp:session.getAttribute(\"password\")",
-    "AUTH-002:updatePassword.jsp:session.getAttribute(\"password\")",
-    "AUTH-002:updateProfile.jsp:session.getAttribute(\"password\")",
-    "AUTH-002:vendorHome.jsp:session.getAttribute(\"password\")",
-    "AUTH-002:vendorSearchTender.jsp:session.getAttribute(\"password\")",
-    "AUTH-002:vendorViewTender.jsp:session.getAttribute(\"password\")",
-    "AUTH-002:viewAssignedTenders.jsp:session.getAttribute(\"password\")",
-    "AUTH-002:viewNotice.jsp:session.getAttribute(\"password\")",
-    "AUTH-002:viewProfile.jsp:session.getAttribute(\"password\")",
-    "AUTH-002:viewTender.jsp:session.getAttribute(\"password\")",
-    "AUTH-002:viewTenderBids.jsp:session.getAttribute(\"password\")",
-    "AUTH-002:viewTenderBidsForm.jsp:session.getAttribute(\"password\")",
-    "XSS-001:viewTenderBidsForm.jsp:<%=request.getParameter(\"tid\")%>",
-    "CSRF-001:viewTenderBidsForm.jsp:href=\"AcceptBidSrv?",
-    "CSRF-001:viewTenderBidsForm.jsp:href=\"RejectBidSrv?"
-  ]
+  "findings": []
 }

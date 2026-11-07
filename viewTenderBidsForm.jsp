@@ -3,6 +3,8 @@
 <%@page
 	import="java.sql.*,com.hit.dao.BidderDao,com.hit.dao.BidderDaoImpl, java.lang.Integer,com.hit.beans.BidderBean,com.hit.utility.DBUtil,java.util.List,java.util.ArrayList,com.hit.dao.TenderDaoImpl,com.hit.dao.TenderDao, javax.servlet.annotation.WebServlet"
 	errorPage="errorpage.jsp"%>
+<%@page import="com.hit.security.HtmlEscaper"%>
+<%@page import="com.hit.security.CsrfTokens"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 <head>
@@ -91,9 +93,8 @@ button:hover {
 	<%
 	String user = (String) session.getAttribute("user");
 	String uname = (String) session.getAttribute("username");
-	String pword = (String) session.getAttribute("password");
 
-	if(!"admin".equalsIgnoreCase(user) || uname == null || uname.trim().isEmpty() || pword == null || pword.isEmpty()){
+	if(!"admin".equalsIgnoreCase(user) || uname == null || uname.trim().isEmpty()){
 
 		response.sendRedirect("loginFailed.jsp");
 			return;
@@ -146,7 +147,7 @@ button:hover {
 
 			<div id="show">
 				Tender Bids For TendorId:
-				<%=request.getParameter("tid")%></div>
+				<%=HtmlEscaper.escape(request.getParameter("tid"))%></div>
 
 
 
@@ -189,11 +190,20 @@ button:hover {
 					if (isPending) {
 					%>
 
-					<td><a
-						href="AcceptBidSrv?bid=<%=bidder.getBidId()%>&tid=<%=bidder.getTenderId()%>&vid=<%=bidder.getVendorId()%>"><button
-								class="btn btn-success">Accept</button></a></td>
-					<td><a
-						href="RejectBidSrv?bid=<%=bidder.getBidId()%>&tid=<%=bidder.getTenderId()%>&vid=<%=bidder.getVendorId()%>"><button class="btn btn-danger">Reject</button></a></td>
+					<td><form action="AcceptBidSrv" method="post">
+						<input type="hidden" name="bid" value="<%=HtmlEscaper.escape(String.valueOf(bidder.getBidId()))%>">
+						<input type="hidden" name="tid" value="<%=HtmlEscaper.escape(String.valueOf(bidder.getTenderId()))%>">
+						<input type="hidden" name="vid" value="<%=HtmlEscaper.escape(String.valueOf(bidder.getVendorId()))%>">
+						<input type="hidden" name="csrfToken" value="<%=CsrfTokens.getOrCreate(session)%>">
+						<button type="submit" class="btn btn-success">Accept</button>
+					</form></td>
+					<td><form action="RejectBidSrv" method="post">
+						<input type="hidden" name="bid" value="<%=HtmlEscaper.escape(String.valueOf(bidder.getBidId()))%>">
+						<input type="hidden" name="tid" value="<%=HtmlEscaper.escape(String.valueOf(bidder.getTenderId()))%>">
+						<input type="hidden" name="vid" value="<%=HtmlEscaper.escape(String.valueOf(bidder.getVendorId()))%>">
+						<input type="hidden" name="csrfToken" value="<%=CsrfTokens.getOrCreate(session)%>">
+						<button type="submit" class="btn btn-danger">Reject</button>
+					</form></td>
 
 					<%
 					} else {

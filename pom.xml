@@ -8,6 +8,7 @@
   <description>Web Application for Online Tender Management</description>
   <build>
     <sourceDirectory>src</sourceDirectory>
+    <testSourceDirectory>security/junit</testSourceDirectory>
     <resources>
       <resource>
         <directory>src</directory>
@@ -35,6 +36,12 @@
     </plugins>
   </build>
   <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.13.2</version>
+      <scope>test</scope>
+    </dependency>
   	<dependency>
     	<groupId>javax.servlet</groupId>
    		<artifactId>jsp-api</artifactId>

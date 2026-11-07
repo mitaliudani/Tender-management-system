@@ -32,7 +32,7 @@ test('every access-controlled JSP rejects missing sessions and stops rendering',
       const source = readFileSync(resolve(repo, `${page}.jsp`), 'utf8');
       assert.match(source, new RegExp(`!"${role}"\\.equalsIgnoreCase\\(user\\)`), page);
       assert.match(source, /uname\s*==\s*null/, page);
-      assert.match(source, /pword\s*==\s*null/, page);
+      assert.doesNotMatch(source, /session\.getAttribute\("password"\)|\bpword\b/, page);
       assert.match(source, /response\.sendRedirect\("loginFailed\.jsp"\);\s*return;/, page);
     }
   }
@@ -43,5 +43,5 @@ test('baseline compares stable rule, path and evidence rather than line numbers'
   const findings = scanRepository(repo);
   const comparison = compareBaseline(findings, baseline);
   assert.equal(comparison.newFindings.length, 0, `Unexpected findings: ${comparison.newFindings.map(findingKey)}`);
-  assert.ok(findings.length > 0, 'Known risks must not be hidden');
+  assert.equal(findings.length, 0, 'All tracked source signatures should be removed');
 });
