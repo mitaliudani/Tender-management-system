@@ -1,0 +1,16 @@
+name: JSP static security regression
+on:
+  push:
+  pull_request:
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify access guards and scanner behavior
+        run: node --test security/*.test.mjs
+      - name: Block new known-pattern findings
+        run: node security/scan.mjs --check

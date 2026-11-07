@@ -29,9 +29,10 @@
 		String uname = (String)session.getAttribute("username");
 		String pword = (String)session.getAttribute("password");
 		
-		if(!user.equalsIgnoreCase("user") || uname.equals("") || pword.equals("")){
+		if(!"user".equalsIgnoreCase(user) || uname == null || uname.trim().isEmpty() || pword == null || pword.isEmpty()){
 			
 			response.sendRedirect("loginFailed.jsp");
+			return;
 			
 		}
 	

@@ -93,9 +93,10 @@ button:hover {
 	String uname = (String) session.getAttribute("username");
 	String pword = (String) session.getAttribute("password");
 
-	if (!user.equalsIgnoreCase("admin") || uname.equals("") || pword.equals("")) {
+	if(!"admin".equalsIgnoreCase(user) || uname == null || uname.trim().isEmpty() || pword == null || pword.isEmpty()){
 
 		response.sendRedirect("loginFailed.jsp");
+			return;
 
 	}
 	%>
