@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
  <%@page import="java.sql.*, com.hit.utility.DBUtil,com.hit.dao.VendorDao,com.hit.dao.VendorDaoImpl,com.hit.beans.VendorBean, javax.servlet.annotation.WebServlet" errorPage="errorpage.jsp"%>
+ <%@page import="com.hit.security.HtmlEscaper"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
   <head>
@@ -27,11 +28,11 @@
 	<%
 		String user = (String)session.getAttribute("user");
 		String uname = (String)session.getAttribute("username");
-		String pword = (String)session.getAttribute("password");
 		
-		if(!user.equalsIgnoreCase("admin") || uname.equals("") || pword.equals("")){
+		if(!"admin".equalsIgnoreCase(user) || uname == null || uname.trim().isEmpty()){
 			
 			response.sendRedirect("loginFailed.jsp");
+			return;
 			
 		}
 	
@@ -74,7 +75,7 @@
 
      	<table style="border-radius:10px" >
 			<tr >
-				<td id="show" style="min-width:632px;min-height:0px;color:blue">Vendor Details For Vendor Id : <%= request.getParameter("vid") %></td>
+				<td id="show" style="min-width:632px;min-height:0px;color:blue">Vendor Details For Vendor Id : <%= HtmlEscaper.escape(request.getParameter("vid")) %></td>
 			</tr>
 		</table>
            <%
@@ -89,11 +90,11 @@
 
 		<table style="background-color:white;margin-left:35%">
 			<th colspan="2">Vendor Contact Details</th>
-			<tr><td>	Vendor Name  : </td><td><%=vendor.getName()  %></td></tr>
-			<tr><td>    Mobile No  : </td><td><%=vendor.getMobile()  %></td></tr>
-		   <tr><td>Email Id  :</td><td><%=vendor.getEmail()  %></td></tr>
-	       <tr><td> Company Name :</td><td><%=vendor.getCompany()  %></td></tr>
-		   <tr><td>	Address  : </td><td><%=vendor.getAddress()  %></td></tr>
+			<tr><td>	Vendor Name  : </td><td><%=HtmlEscaper.escape(vendor.getName())%></td></tr>
+			<tr><td>    Mobile No  : </td><td><%=HtmlEscaper.escape(vendor.getMobile())%></td></tr>
+		   <tr><td>Email Id  :</td><td><%=HtmlEscaper.escape(vendor.getEmail())%></td></tr>
+	       <tr><td> Company Name :</td><td><%=HtmlEscaper.escape(vendor.getCompany())%></td></tr>
+		   <tr><td>	Address  : </td><td><%=HtmlEscaper.escape(vendor.getAddress())%></td></tr>
 					
 		</table>
 	

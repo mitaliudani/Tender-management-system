@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
  <%@page import="java.sql.*, com.hit.utility.DBUtil, javax.servlet.annotation.WebServlet, com.hit.beans.VendorBean" errorPage="errorpage.jsp"%>
+<%@page import="com.hit.security.HtmlEscaper"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
   <head>
@@ -27,11 +28,11 @@
 	<%
 		String user = (String)session.getAttribute("user");
 		String uname = (String)session.getAttribute("username");
-		String pword = (String)session.getAttribute("password");
 		
-		if(!user.equalsIgnoreCase("user") || uname.equals("") || pword.equals("")){
+		if(!"user".equalsIgnoreCase(user) || uname == null || uname.trim().isEmpty()){
 			
 			response.sendRedirect("loginFailed.jsp");
+			return;
 			
 		}
 	
@@ -87,12 +88,12 @@
 	
 		<table style="background-color:white">
 			<th colspan="2">User Profile</th>
-			<tr><td style="color:red">	Vendor Id  : </td><td><%= vendor.getId()%></td></tr>
-			<tr><td style="color:red">    Vendor Name: </td><td><%= vendor.getName()%></td></tr>
-		   <tr><td style="color:red">	Mobile No.    :</td><td> <%= vendor.getMobile()%></td></tr>
-	       <tr><td style="color:red"> Email Id :</td><td> <%= vendor.getEmail()%></td></tr>
-		   <tr><td style="color:red">	Address  : </td><td><textarea rows="2" cols="40" style="font-size:15px" name="vaddr" readonly><%=vendor.getAddress() %> </textarea></td></tr>
-		   <tr><td style="color:red">	Company Name : </td><td> <%= vendor.getCompany()%></td></tr>
+			<tr><td style="color:red">	Vendor Id  : </td><td><%= HtmlEscaper.escape(vendor.getId())%></td></tr>
+			<tr><td style="color:red">    Vendor Name: </td><td><%= HtmlEscaper.escape(vendor.getName())%></td></tr>
+		   <tr><td style="color:red">	Mobile No.    :</td><td> <%= HtmlEscaper.escape(vendor.getMobile())%></td></tr>
+	       <tr><td style="color:red"> Email Id :</td><td> <%= HtmlEscaper.escape(vendor.getEmail())%></td></tr>
+		   <tr><td style="color:red">	Address  : </td><td><textarea rows="2" cols="40" style="font-size:15px" name="vaddr" readonly><%=HtmlEscaper.escape(vendor.getAddress())%> </textarea></td></tr>
+		   <tr><td style="color:red">	Company Name : </td><td> <%= HtmlEscaper.escape(vendor.getCompany())%></td></tr>
 			<tr><td style="color:red" colspan="2" align="center" value="Launch"><a href="updateProfile.jsp" style="color:green">Click Here To Update Profile</a></td></tr>
 			
 		</table>
