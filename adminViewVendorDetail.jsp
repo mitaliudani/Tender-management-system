@@ -90,11 +90,11 @@
 
 		<table style="background-color:white;margin-left:35%">
 			<th colspan="2">Vendor Contact Details</th>
-			<tr><td>	Vendor Name  : </td><td><%=vendor.getName()  %></td></tr>
-			<tr><td>    Mobile No  : </td><td><%=vendor.getMobile()  %></td></tr>
-		   <tr><td>Email Id  :</td><td><%=vendor.getEmail()  %></td></tr>
-	       <tr><td> Company Name :</td><td><%=vendor.getCompany()  %></td></tr>
-		   <tr><td>	Address  : </td><td><%=vendor.getAddress()  %></td></tr>
+			<tr><td>	Vendor Name  : </td><td><%=HtmlEscaper.escape(vendor.getName())%></td></tr>
+			<tr><td>    Mobile No  : </td><td><%=HtmlEscaper.escape(vendor.getMobile())%></td></tr>
+		   <tr><td>Email Id  :</td><td><%=HtmlEscaper.escape(vendor.getEmail())%></td></tr>
+	       <tr><td> Company Name :</td><td><%=HtmlEscaper.escape(vendor.getCompany())%></td></tr>
+		   <tr><td>	Address  : </td><td><%=HtmlEscaper.escape(vendor.getAddress())%></td></tr>
 					
 		</table>
 	

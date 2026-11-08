@@ -7,10 +7,10 @@ This repository contains a legacy Java/JSP tender and bidding project and a smal
 ## Implemented in this repository
 
 - **Authorization guard improvement:** 23 admin/vendor JSP pages use null-safe role checks, stop rendering after rejection, and no longer read the session password. The missing login backend may still store a password and must be audited separately.
-- **Output encoding:** Two request-parameter reflections use a tested Java `HtmlEscaper` helper for HTML text output.
+- **Output encoding:** Two request-parameter reflections and dynamic vendor/tender/bid fields in six representative JSP views use the tested Java `HtmlEscaper` helper for HTML text and quoted attributes. Other JSP outputs remain unaudited.
 - **Sensitive actions:** Bid accept/reject and notice removal are now POST forms with synchronizer tokens. `MutatingActionFilter` enforces admin sessions, POST and per-session CSRF tokens for those three servlet routes. Backend servlet implementations are missing; their POST behavior and object-level authorization cannot yet be verified.
 - **Static security scanner:** `security/scan.mjs` recursively inspects JSP source for null-unsafe role checks, session password use, direct HTML reflection, and selected state-changing GET entry points.
-- **Regression tests:** Nine Node tests check the analyzer, role guards, protected forms and filter mappings; a Java smoke test exercises the output encoder, and four Maven/JUnit tests verify security helpers.
+- **Regression tests:** Node tests check the analyzer, role guards, protected forms, representative output encoding and filter mappings; a Java smoke test exercises the output encoder, and four Maven/JUnit tests verify security helpers.
 - **CI:** GitHub Actions compiles Java security helpers, runs tests, and blocks new scanner findings. The tracked baseline currently contains no matching JSP signatures; this is **not** a system-wide security certification.
 - **Reporting and disclosure:** [SECURITY.md](SECURITY.md) documents scope and how to report vulnerabilities safely.
 

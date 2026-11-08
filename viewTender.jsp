@@ -3,6 +3,7 @@
 <%@page
 	import="java.sql.*,java.lang.Integer,java.lang.String, com.hit.beans.TenderBean,com.hit.utility.DBUtil,java.util.List,com.hit.dao.TenderDaoImpl,com.hit.dao.TenderDao, javax.servlet.annotation.WebServlet"
 	errorPage="errorpage.jsp"%>
+<%@page import="com.hit.security.HtmlEscaper"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 <head>
@@ -137,13 +138,13 @@ tr:hover {
 
 
 				<tr>
-					<td><a href="viewTenderBidsForm.jsp?tid=<%=tid%>"><%=tid%></a></td>
-					<td><%=tname%></td>
-					<td><%=ttype%></td>
+					<td><a href="viewTenderBidsForm.jsp?tid=<%=HtmlEscaper.escape(tid)%>"><%=HtmlEscaper.escape(tid)%></a></td>
+                    <td><%=HtmlEscaper.escape(tname)%></td>
+                    <td><%=HtmlEscaper.escape(ttype)%></td>
 					<td>&#8377; <%=tprice%></td>
-					<td><%=tloc%></td>
+					<td><%=HtmlEscaper.escape(tloc)%></td>
 					<td><%=tdeadline%></td>
-					<td><textarea rows="3" disabled><%=tdesc%></textarea></td>
+					<td><textarea rows="3" disabled><%=HtmlEscaper.escape(tdesc)%></textarea></td>
 				</tr>
 
 

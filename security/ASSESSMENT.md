@@ -7,7 +7,7 @@ Inspected the public repository's JSP source, session-authorization guards, and 
 ## Confirmed changes
 
 1. **23 protected JSP pages:** null-safe expected-role comparison; missing username causes rejection; `return` after redirect prevents the rest of the JSP from executing. The pages no longer read a password from the session.
-2. **Two reflected request parameters:** output passes through a tested Java HTML text encoder.
+2. **Output encoding:** two reflected request parameters and dynamic vendor/tender/bid text in six representative JSP views pass through a tested Java HTML encoder. Other JSP and JavaScript output contexts remain unreviewed.
 3. **Three sensitive admin actions:** forms now POST a synchronizer token, and an annotated servlet filter checks method, admin session and token before forwarding to the action handler. This follows OWASP's synchronizer-token approach.
 4. **Security scanner and tests:** repeatable source review with an empty current signature baseline, Java helper compilation, static form/filter checks and CI regression guard.
 
@@ -29,4 +29,4 @@ node security/scan.mjs --check
 mvn -q test
 ```
 
-At review time: nine Node tests and four Java JUnit tests are configured, and all three Java security helper classes compile against Servlet API 3.0.1; no matching JSP signature findings remain. A matching public reference project includes POST methods in its three legacy action servlets, but these handlers are absent from this repository and production integration remains unverified. That reference also retains plaintext/default passwords in its legacy authentication code; it should never be deployed as-is. This is a defensive learning exercise and **not** a claim of Anthropic Cyber Verification Program eligibility or approval.
+At review time: Node tests and four Java JUnit tests are configured, and all three Java security helper classes compile against Servlet API 3.0.1; no matching JSP signature findings remain. A matching public reference project includes POST methods in its three legacy action servlets, but these handlers are absent from this repository and production integration remains unverified. That reference also retains plaintext/default passwords in its legacy authentication code; it should never be deployed as-is. This is a defensive learning exercise and **not** a claim of Anthropic Cyber Verification Program eligibility or approval.

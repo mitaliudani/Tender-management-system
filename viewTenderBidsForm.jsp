@@ -179,12 +179,12 @@ button:hover {
 
 
 				<tr>
-					<td><%=bidder.getBidId()%></td>
+					<td><%=HtmlEscaper.escape(String.valueOf(bidder.getBidId()))%></td>
 					<td><a
-						href="adminViewVendorDetail.jsp?vid=<%=bidder.getVendorId()%>"><%=bidder.getVendorId()%></a></td>
-					<td><%=bidder.getBidAmount()%></td>
-					<td><%=bidder.getBidDeadline()%></td>
-					<td><%=bidder.getBidStatus()%></td>
+						href="adminViewVendorDetail.jsp?vid=<%=HtmlEscaper.escape(String.valueOf(bidder.getVendorId()))%>"><%=HtmlEscaper.escape(String.valueOf(bidder.getVendorId()))%></a></td>
+					<td><%=HtmlEscaper.escape(String.valueOf(bidder.getBidAmount()))%></td>
+					<td><%=HtmlEscaper.escape(String.valueOf(bidder.getBidDeadline()))%></td>
+					<td><%=HtmlEscaper.escape(String.valueOf(bidder.getBidStatus()))%></td>
 
 					<%
 					if (isPending) {
@@ -209,8 +209,8 @@ button:hover {
 					} else {
 					%>
 
-					<td><button class="btn btn-success" disabled><%=status%></button></td>
-					<td><button class="btn btn-danger" disabled><%=status%></button></td>
+					<td><button class="btn btn-success" disabled><%=HtmlEscaper.escape(status)%></button></td>
+					<td><button class="btn btn-danger" disabled><%=HtmlEscaper.escape(status)%></button></td>
 					<%
 					}
 					%>

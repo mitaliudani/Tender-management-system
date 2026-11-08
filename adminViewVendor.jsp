@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
  <%@page import="java.sql.*, java.lang.Integer,com.hit.beans.VendorBean,com.hit.utility.DBUtil,java.util.List,java.util.ArrayList,com.hit.dao.VendorDaoImpl,com.hit.dao.VendorDao, javax.servlet.annotation.WebServlet" errorPage="errorpage.jsp"%>
+<%@page import="com.hit.security.HtmlEscaper"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
   <head>
@@ -152,9 +153,9 @@
      				%>
      				
      			
-     		<tr> <td><a href="adminViewVendorDetail.jsp?vid=<%=vendor.getId() %>"><%= vendor.getId() %></a> </td>  <td><%= vendor.getName() %> </td>  <td><%= vendor.getMobile() %> </td>
-     		  <td><%= vendor.getEmail() %> </td>   <td><%= vendor.getCompany() %> </td>  
-     		  	<td><textarea readonly><%= vendor.getAddress() %> </textarea></td> </tr>
+		<tr> <td><a href="adminViewVendorDetail.jsp?vid=<%=HtmlEscaper.escape(vendor.getId()) %>"><%= HtmlEscaper.escape(vendor.getId()) %></a> </td>  <td><%= HtmlEscaper.escape(vendor.getName()) %> </td>  <td><%= HtmlEscaper.escape(vendor.getMobile()) %> </td>
+		<td><%= HtmlEscaper.escape(vendor.getEmail()) %> </td>   <td><%= HtmlEscaper.escape(vendor.getCompany()) %> </td>
+		<td><textarea readonly><%= HtmlEscaper.escape(vendor.getAddress()) %> </textarea></td> </tr>
  
  <% } %>
 
